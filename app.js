@@ -14,7 +14,7 @@ app.configure(function(){
 	app.use(express.static(path.join(__dirname, "public")));
 });
 
-io.sockets.on("connection", function(){
+io.sockets.on("connection", function(socket){
 	console.log("controller connected");
 	socket.on("added", function(data){
 		io.emit("added", data);
