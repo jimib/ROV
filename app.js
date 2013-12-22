@@ -17,15 +17,15 @@ app.configure(function(){
 io.sockets.on("connection", function(socket){
 	console.log("controller connected");
 	socket.on("added", function(data){
-		io.emit("added", data);
+		io.sockets.emit("added", data);
 	});
 	
 	socket.on("removed", function(data){
-		io.emit("removed", data);
+		io.sockets.emit("removed", data);
 	});
 	
 	socket.on("update", function(data){
-		io.emit("update", data);
+		io.sockets.emit("update", data);
 	});
 });
 
