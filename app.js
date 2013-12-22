@@ -14,24 +14,19 @@ app.configure(function(){
 	app.use(express.static(path.join(__dirname, "public")));
 });
 
-io.of("controller").on("connection", function(){
+io.sockets.on("connection", function(){
 	console.log("controller connected");
-	
 	socket.on("added", function(data){
-		io.of("client").emit("added", data);
+		io.emit("added", data);
 	});
 	
 	socket.on("removed", function(data){
-		io.of("client").emit("removed", data);
+		io.emit("removed", data);
 	});
 	
 	socket.on("update", function(data){
-		io.of("client").emit("update", data);
+		io.emit("update", data);
 	});
-});
-
-io.of("client").on("connection", function(){
-	console.log("client connected");
 });
 
 app.listen(config.port);
