@@ -1,6 +1,7 @@
 {
 	"name": "XBoxServer",
 	"version": "0.0.0",
+	"nodeVersion" : "0.8.11",
 	"description": "ERROR: No README.md file found!",
 	"main": "app.js",
 	"scripts": {
