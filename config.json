@@ -1,3 +1,4 @@
 {
-	"port" : 4035
+	"port" : 4000,
+	"serial" : "/dev/tty.usbmodem1421"
 }

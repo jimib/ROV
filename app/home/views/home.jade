@@ -10,8 +10,15 @@ html
 			}
 	body
 		#container
-		
-		script(src="/js/swfobject.js")
-		script.
-			swfobject.embedSWF("XBoxClient.swf", "container", "1000", "600", "11.0.0");
-		
+			h1 Rov Connected
+			
+			ul(data-bind="template: {name: 'controller', foreach: controllers}")
+			
+			script#controller(type="text/html")
+				p(data-bind="text: 'Controller: '+device")
+			
+		#scripts
+			script(src="/js/jquery.js")
+			script(src="/js/knockout.js")
+			script(src="/socket.io/socket.io.js")
+			script(src="/home/js/home.js")
