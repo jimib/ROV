@@ -6,14 +6,6 @@ var io = require("./lib/sockets")(app);
 
 var config = require("./config.json");
 
-console.log(config);
-
-var firmata = require('firmata');
-var board = new firmata.Board(config.serial,function(){
-	board.pinMode(3, board.MODES.OUTPUT);
-});
-
-
 app.configure(function(){
 	app.set("view engine", "jade");
 	
@@ -49,12 +41,7 @@ io.sockets.on("connection", function(socket){
 	
 	socket.on("update", function(data){
 		//pass this information onto the serial socket
-		switch(data.controller){
-			case "BUTTON_4":
-				console.log("Change led: ", data.value);
-				board.digitalWrite(3, data.value);
-				break;
-		}
+		io.sockets.emit("update", data);
 	});
 	
 	socket.on("disconnect", function(){
