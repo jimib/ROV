@@ -1,0 +1,7 @@
+<html><head><style>body{
+ background-color: #ddd;
+ text-align:center;
+}
+#container{
+ margin: auto;
+}</style></head><body><div id="container"><h1>Rov Connected</h1><ul data-bind="template: {name: 'controller', foreach: controllers}"></ul><script id="controller" type="text/html"><p data-bind="text: 'Controller: '+device"></p></script></div><div id="scripts"><script src="/js/jquery.js"></script><script src="/js/knockout.js"></script><script src="/socket.io/socket.io.js"></script><script src="/js/home.js"></script></div></body></html>
