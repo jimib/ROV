@@ -14,9 +14,6 @@ var board = new firmata.Board(config.serial, function(){
 })
 
 app.configure(function(){
-	app.set("view engine", "jade");
-	
-	app.use(require("./app/home"));
 	app.use(app.router);
 	app.use(express.static(path.join(__dirname, "public")));
 });
