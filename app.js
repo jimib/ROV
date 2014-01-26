@@ -1,17 +1,23 @@
 var express = require("express"),
 	path = require("path"),
-	firmata = require("firmata");
+	SerialPort = require("serialport").SerialPort;
 	
 var app = express();
 var io = require("./lib/sockets")(app);
 
-
 var config = require("./config.json");
 
-var board = new firmata.Board(config.serial, function(){
-	console.log("board connected");
-	board.pinMode(3, board.MODES.OUTPUT)
-})
+var serial = new SerialPort(config.serial, {
+  baudrate: 9600,
+  dataBits: 8, // this is the default for Arduino serial communication
+  parity: 'none', // this is the default for Arduino serial communication
+  stopBits: 1, // this is the default for Arduino serial communication
+  flowControl: false // this is the default for Arduino serial communication
+});
+
+serial.open(function(){
+	console.log("opened port");
+});
 
 app.configure(function(){
 	app.use(app.router);
@@ -22,6 +28,18 @@ var controllers = [];
 io.sockets.on("connection", function(socket){
 	
 	var icontrollers = {};
+	
+	
+	socket.on("update", function(data){
+		//pass this information onto the serial socket
+		switch(data.controller){
+			case "BUTTON_4":
+				console.log("Change led: ", data.value);
+				serial.write("/1/2/3/"+(data.value + 1)+"/");
+				break;
+			}
+	});
+	
 	socket.on("added", function(data){
 		console.log("added", data);
 		if(addController(data)){
@@ -33,25 +51,15 @@ io.sockets.on("connection", function(socket){
 	});
 	
 	socket.on("removed", function(data){
-		
+		console.log("removed", data);
 		if(removeControllerById(data.device)){
 			//delete note of the device this socket contributed
 			delete icontrollers[data.device];
 			//notify all
 			io.sockets.emit("removed", data);
 		}
-		
 	});
 	
-	socket.on("update", function(data){
-		//pass this information onto the serial socket
-		//send the command to the serial port
-		if(data.controller == "BUTTON_4"){
-			board.digitalWrite(3, data.value);
-		}
-
-		io.sockets.emit("update", data);
-	});
 	
 	socket.on("disconnect", function(){
 		//remove all the devices listed against this socket

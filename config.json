@@ -1,4 +1,4 @@
 {
 	"port" : 4000,
-	"serial" : "/dev/ttyACM0"
+	"serial" : "/dev/tty.usbmodem1421"
 }

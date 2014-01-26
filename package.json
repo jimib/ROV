@@ -10,7 +10,7 @@
 		"express" : "*",
 		"socket.io" : "*",
 		"jade" : "*",
-		"firmata" : "*"
+		"serialport" : "*"
 	},
 	"repository": "",
 	"author": "Jimib",
