@@ -1,10 +1,17 @@
 var express = require("express"),
-	path = require("path");
+	path = require("path"),
+	firmata = require("firmata");
 	
 var app = express();
 var io = require("./lib/sockets")(app);
 
+
 var config = require("./config.json");
+
+var board = new firmata.Board(config.serial, function(){
+	console.log("board connected");
+	board.pinMode(3, board.MODES.OUTPUT)
+})
 
 app.configure(function(){
 	app.set("view engine", "jade");
@@ -41,6 +48,11 @@ io.sockets.on("connection", function(socket){
 	
 	socket.on("update", function(data){
 		//pass this information onto the serial socket
+		//send the command to the serial port
+		if(data.controller == "BUTTON_4"){
+			board.digitalWrite(3, data.value);
+		}
+
 		io.sockets.emit("update", data);
 	});
 	
