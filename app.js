@@ -37,7 +37,12 @@ io.sockets.on("connection", function(socket){
 				console.log("Change led: ", data.value);
 				serial.write("/1/2/3/"+(data.value + 1)+"/");
 				break;
-			}
+			case "AXIS_1":
+				var output = Math.round(255 * Math.max(0, data.value));
+				console.log("Drive Servo: ", output);
+				serial.write("/1/1/9/"+(output)+"/");
+				break;
+		}
 	});
 	
 	socket.on("added", function(data){
